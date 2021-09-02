@@ -6,7 +6,7 @@ from .models import Comment, Post
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
 
-    list_display = ('title', 'author', 'time_created', 'time_published', 'status')
+    list_display = ('title', 'author', 'time_created', 'time_published', 'status', 'time_updated')
     list_filter = ('title', 'author', 'status', 'time_published')
     search_fields = ('title', 'body')
     prepopulated_fields = {'slug': ('title',)}

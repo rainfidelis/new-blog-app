@@ -29,6 +29,7 @@ class Post(models.Model):
     body = models.TextField('Post')
     time_published = models.DateTimeField(default=timezone.now)
     time_created = models.DateTimeField('Created', auto_now_add=True)
+    time_updated = models.DateTimeField('updated', auto_now=True)
     status = models.CharField(max_length=10, 
                             choices=STATUS_CHOICES, 
                             default='draft')
