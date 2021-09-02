@@ -1,0 +1,33 @@
+{% load blog_tags %}
+{% load static %} 
+
+<!DOCTYPE html> 
+<html> 
+    <head>  
+        <title>{% block title %}{% endblock %}</title>  
+        <link href="{% static 'css/blog.css' %}" rel="stylesheet"> 
+    </head> 
+    <body>  
+        <div id="content">    
+            {% block content %}    
+            {% endblock %}  
+        </div>  
+        <div id="sidebar">    
+            <h2>
+                <a href="{% url 'blog:home' %}">Rain Blog</a>
+            </h2>    
+            <p><em>In pursuit of perfection... {% total_posts %} posts written so far.</em></p>
+            <h3>Latest Posts</h3>
+            {% show_latest_posts 3 %}
+            {% get_most_commented_posts 3 as most_commented_posts %}
+            <h3>Most Commented Posts</h3>
+            <ul>
+                {% for post in most_commented_posts %}
+                    <li>
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div> 
+    </body> 
+    </html>
