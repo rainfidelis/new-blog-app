@@ -4,6 +4,8 @@ from .views import (PostListView,
                     post_list_view,
                     post_share_view
                     )
+from .feeds import LatestPostFeed
+
 
 app_name = 'blog'
 urlpatterns = [
@@ -12,4 +14,5 @@ urlpatterns = [
     path('tag/<slug:tag_slug>', post_list_view, name='post_list_by_tag'),
     path('<int:year>/<int:month>/<int:day>/<slug:post>/', post_detail_view, name='detail'),
     path('<int:post_id>/share/', post_share_view, name='post_share'),
+    path('feed/', LatestPostFeed(), name='post_feed'),
 ]
