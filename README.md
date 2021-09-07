@@ -21,6 +21,6 @@ I would love to add the following functionalities shortly:
 The site is currently hosted at:
 
 ## Development
-Should you wish to work locally with this project, simply fork the repo, clone to your local machine, and run `pip install -r requirements.txt` to install the requirements file and get existing dependencies.
+Should you wish to work locally with this project, simply fork the repo, clone to your local machine, and run `pip install > requirements.txt` to install the requirements file and get existing dependencies.
 
 The .env.example file shows you the environment variables needed to successfully run the project.
