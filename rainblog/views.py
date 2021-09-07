@@ -8,8 +8,9 @@ from django.core.paginator import (
 from django.views.generic import ListView, DetailView
 from django.core.mail import send_mail
 from django.db.models import Count
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from taggit.models import Tag
-from .forms import EmailPostForm, CommentForm
+from .forms import EmailPostForm, CommentForm, SearchForm
 
 
 # Class Based Views
@@ -50,10 +51,10 @@ def post_list_view(request, tag_slug=None):
         posts = paginator.page(paginator.num_pages)
 
     return render(request, 
-                    'blog/post/index.html', 
-                    {'page':page,
-                     'posts':posts,
-                     'tag':tag})
+                  'blog/post/index.html', 
+                  {'page':page,
+                    'posts':posts,
+                    'tag':tag})
 
 
 def post_detail_view(request, year, month, day, post):
@@ -121,3 +122,30 @@ def post_share_view(request, post_id):
                   'form':form, 
                   'sent':sent})
 
+
+def post_search_view(request):
+
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            search_vector = SearchVector('title', 'body')
+            search_query = SearchQuery(query)
+            search_rank = SearchRank(search_vector, search_query)
+            results = Post.published.annotate(
+                search=search_vector, rank=search_rank
+                ).filter(search=search_query).order_by('-rank')
+            # results = Post.published.annotate(
+            #     similarity = TrigramSimilarity('title', 'query'),
+            #     ).filter(similarity__gt=0.1).order_by('-similarity')
+
+    else:
+        form = SearchForm()
+        query = None
+        results = []
+
+    return render(request, 
+                  'blog/post/search.html', 
+                  {'form':form, 
+                   'query':query, 
+                   'results':results})

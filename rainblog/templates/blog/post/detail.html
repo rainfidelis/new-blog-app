@@ -17,13 +17,6 @@
             Share this post
         </a>
     </p>
-
-    {% with comments.count as total_comments %}
-        <h2>
-            {{ total_comments }} comment{{ total_comments|pluralize }}
-        </h2>
-    {% endwith %}
-    
     <h2>Similar Posts</h2>
     {% for post in similar_posts %}
         <p><a href="{{post.get_absolute_url}}">
@@ -32,6 +25,12 @@
     {% empty %}
         There are no similar posts yet.
     {% endfor %}
+    
+    {% with comments.count as total_comments %}
+        <h2>
+            {{ total_comments }} comment{{ total_comments|pluralize }}
+        </h2>
+    {% endwith %}
 
     <h2>Comments</h2>
     {% for comment in comments %}
@@ -49,6 +48,7 @@
     {% if new_comment %}
         <h2>Your comment was added successfully.</h2>
     {% else %}
+        <h2>Add new comment:</h2>
         <form method="POST">
             {{ comment_form.as_p }}
             {% csrf_token %}

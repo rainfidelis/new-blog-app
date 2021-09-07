@@ -41,10 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rainblog',
-    'taggit',
+    'django.contrib.postgres',
     'django.contrib.sites',
     'django.contrib.sitemaps',
+
+    # Web applications
+    'rainblog',
+
+    # Third party apps
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -83,8 +88,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD')
     }
 }
 
