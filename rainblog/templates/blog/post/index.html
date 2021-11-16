@@ -1,32 +1,95 @@
-{% extends 'blog/base.html' %}
-{% load blog_tags %}
+{% load static %}
 
-{% block title %}Rain Blog{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-    <h1>Rain Blog</h1>
-    {% if tag %}
-        <h2>Posts tagged with "{{ tag.name }}"</h2>
-    {% endif %}
-    {% for post in posts %}
-        <h2>
-            <a href="{{ post.get_absolute_url }}">
-                {{ post.title }}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/utils.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile.css' %}">
+    <title>Rain Blog - Let's Talk Tech</title>
+</head>
+
+<body>
+    <nav class="navigation max-width-1 m-auto">
+        <div class="nav-left">
+            <a href="{% url 'blog:home' %}">
+                <span><img src="{% static 'img/logo.png' %}" width="94px" alt=""></span>
             </a>
-        </h2>
-        <p class="tags">
-            Tags: 
-            {% for tag in post.tags.all %}
-                <a href="{% url 'blog:post_list_by_tag' tag.slug %}">
-                    {{ tag.name }}
+            <ul>
+                <li><a href="{% url 'blog:home' %}">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <form action="{% url 'blog:post_search' %}" method="get">
+                <input class="form-input" type="text" name="query" placeholder="Article Search" required>
+                <button class="btn">Search</button>
+            </form>
+
+        </div>
+
+    </nav>
+    <div class="max-width-1 m-auto">
+        <hr>
+    </div>
+    <div class="m-auto content max-width-1 my-2">
+        <div class="content-left">
+            <h1>Let's Talk Tech</h1>
+            <p>
+                I am not quite sure what I'd love this blog to be about just yet. One thing's certain, though,
+                it'll be a place for me to freely express myself. Here, I get to talk about my tech journey,
+                the challenges I've faced so far, and how I've tackled - or intend to tackle - them. Sound boring?
+                I promise you it's not! I'd rant, but I'd also share my knowledge. 
+            </p>
+            <p>I can assure you of one thing: this would be fun!</p>
+        </div>
+        <div class="content-right">
+            <img src="{% static 'img/home.svg' %}" alt="Rain Blog">
+        </div>
+    </div>
+
+    <div class="max-width-1 m-auto">
+        <hr>
+    </div>
+    <div class="home-articles max-width-1 m-auto font2">
+        <h2>Featured Articles</h2>
+        <!-- <div class="year-box adjust-year">
+            <div>
+                <h3>Year </h3>
+            </div>
+            <div>
+                <input type="radio" name="year" id=""> 2020
+            </div>
+            <div>
+                <input type="radio" name="year" id=""> 2021
+            </div>
+        </div> -->
+
+        {% for post in posts %}
+        <div class="home-article">
+            <div class="home-article-img">
+                <img src="{% static 'img/3.png' %}" alt="article">
+            </div>
+            <div class="home-article-content font1">
+                <a href="{{ post.get_absolute_url }}">
+                    <h3>{{ post.title }}</h3>
                 </a>
-                {% if not forloop.last %}, {% endif %}
-            {% endfor %}
-        </p>
-        <p class="date">
-            Published {{ post.time_published }} by {{ post.author }}
-        </p>
-        {{ post.body|markdown|truncatewords_html:15 }}
-    {% endfor %}
-    {% include 'pagination.html' with page=posts %}
-{% endblock %}
+
+                <div>{{ post.author|title }}</div>
+                <span>{{ post.time_published }} | {{ post.get_read_time }}</span>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="footer">
+        <p>Copyright &copy; rainfidelis.com </p>
+    </div>
+</body>
+
+</html>

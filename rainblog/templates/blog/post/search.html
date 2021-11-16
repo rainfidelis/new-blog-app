@@ -1,30 +1,97 @@
-{% extends 'blog/base.html' %} 
+{% load static %}
 {% load blog_tags %}
 
-{% block title %}
-    Search
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/utils.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile.css' %}">
+    <title>Rain Blog - Search results</title>
+</head>
+<body>
+    <nav class="navigation max-width-1 m-auto">
+        <div class="nav-left">
+            <a href="/">
+                <span><img src="{% static 'img/logo.png' %}" width="94px" alt=""></span>
+            </a>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <form action="{% url 'blog:post_search' %}" method="get">
+                <input class="form-input" type="text" name="query" placeholder="Article Search" required>
+                <button class="btn">Search</button>
+            </form>
 
-{% block content %}  
-    {% if query %}    
-        <h1>Posts containing "{{ query }}"</h1>    
-        <h3>
-            {% with results.count as total_results %}        
-                Found {{ total_results }} result{{ total_results|pluralize }}      
-            {% endwith %}    
-        </h3>    
-        {% for post in results %}      
-            <h4><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>      
-            {{ post.body|markdown|truncatewords_html:5 }}    
-        {% empty %}      
-            <p>There are no results for your query.</p>    
-        {% endfor %}    
-        <p><a href="{% url 'blog:post_search' %}">Search again</a></p>  
-    {% else %}    
-        <h1>Search for posts</h1>    
-        <form method="get">      
-            {{ form.as_p }}      
-            <input type="submit" value="Search">    
-        </form>  
-    {% endif %} 
-{% endblock %}
+        </div>
+
+    </nav>
+ 
+
+    <div class="max-width-1 m-auto"><hr></div>
+    <div class="home-articles max-width-1 m-auto font2">
+        
+        {% if query %}
+            <h2>Search Results for "{{query}}" ({{query_time}})</h2>
+            <br>
+            <h4>
+                {% with results.count as total_results %}
+                    Found {{ total_results }} result{{ total_results|pluralize }}
+                {% endwith %}
+            </h4>
+            <!-- <div class="year-box adjust-year">
+                <div>
+                    <h3>Year </h3>
+                </div>
+                <div>
+                    <input type="radio" name="year" id=""> 2020
+                </div>
+                <div>
+                    <input type="radio" name="year" id=""> 2021
+                </div>
+            </div> -->
+            {% for post in results %}
+                <div class="home-article">
+                    <div class="home-article-img">
+                        <img src="{% static 'img/11.svg' %}" alt="article">
+                    </div>
+                    <div class="home-article-content font1">
+                        <a href="{{ post.get_absolute_url }}"><h3>{{ post.title }}</h3></a>
+                        
+                        <span>Author - {{ post.author|title }}</span>
+                        <p></p>
+                        <span>{{ post.time_published }} | {{ post.get_read_time }}</span>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="home-article">
+                    <div class="home-article-content font1">
+                        <p>There are no results for your query. Try something else?</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="home-article">
+                <div class="home-article-content font1">
+                    <h3>Search Posts</h3>
+                    <form action="{%%" method="get">      
+                        {{ form.as_p }}      
+                        <input type="submit" value="Search" required>    
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+         
+    </div>
+
+    <div class="footer">
+        <p>Copyright &copy; <a href="https://rainfidelis.com">rainfidelis.com</a> </p>
+    </div>
+</body>
+</html>

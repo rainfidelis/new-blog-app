@@ -31,6 +31,11 @@
                     </li>
                 {% endfor %}
             </ul>
+            <h3>Search</h3>
+            <form method="get">      
+                {{ form.as_p }}      
+                <input type="submit" value="Search">    
+            </form>
         </div> 
     </body> 
     </html>

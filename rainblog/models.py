@@ -2,7 +2,9 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+
 from taggit.managers import TaggableManager
+import readtime
 
 
 class PublishedManager(models.Manager):
@@ -47,6 +49,9 @@ class Post(models.Model):
                               self.time_published.day,
                               self.slug])
 
+    def get_read_time(self):
+        result = readtime.of_text(self.body)
+        return result.text
 
 
 class Comment(models.Model):

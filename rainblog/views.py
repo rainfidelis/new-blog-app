@@ -1,3 +1,5 @@
+import time
+
 from django.shortcuts import get_object_or_404, render
 from .models import Post
 from django.core.paginator import (
@@ -37,7 +39,7 @@ def post_list_view(request, tag_slug=None):
         tag = get_object_or_404(Tag, slug=tag_slug)
         object_list = object_list.filter(tags__in=[tag])
 
-    paginator = Paginator(object_list, 3)
+    paginator = Paginator(object_list, 5)
     page = request.GET.get('page')
 
     try:
@@ -125,6 +127,8 @@ def post_share_view(request, post_id):
 
 def post_search_view(request):
 
+    start_time = time.time()
+
     if 'query' in request.GET:
         form = SearchForm(request.GET)
         if form.is_valid():
@@ -132,6 +136,7 @@ def post_search_view(request):
             search_vector = SearchVector('title', 'body')
             search_query = SearchQuery(query)
             search_rank = SearchRank(search_vector, search_query)
+            query_time = f"{(time.time() - start_time)//1000} seconds"
             results = Post.published.annotate(
                 search=search_vector, rank=search_rank
                 ).filter(search=search_query).order_by('-rank')
@@ -147,5 +152,6 @@ def post_search_view(request):
     return render(request, 
                   'blog/post/search.html', 
                   {'form':form, 
-                   'query':query, 
+                   'query':query,
+                   'query_time':query_time, 
                    'results':results})
