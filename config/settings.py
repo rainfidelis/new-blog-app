@@ -28,8 +28,8 @@ SECRET_KEY = config('SECRET_KEY')
 # DEBUG = config('DEBUG', cast=bool)
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['blog-rain.herokuapp.com', '127.0.0.1']
-# ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1']
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['blog-rain.herokuapp.com']
 
 SITE_ID = 1
 
