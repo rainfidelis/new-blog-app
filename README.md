@@ -15,7 +15,10 @@ The application in its current state boasts the following features:
 ## To Do:
 I would love to add the following functionalities shortly:
 + A user dashboard with admin capabilities
-+ Incorporate better frontend templates
++ Make image addition to the page more dynamic
+
+## Recently Added
++ Better frontend templates for a more stylish website
 
 ## Hosting
 The site is currently hosted at:
